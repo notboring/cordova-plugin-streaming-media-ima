@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="cordova-plugin-streamingmediaima-adplay" version="1.0.0">
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="cordova-plugin-streaming-media-ima-adplay" version="1.0.0">
    <name>StreamingMediaIMA</name>
    <js-module name="StreamingMediaIMA" src="www/StreamingMediaIMA.js">
       <clobbers target="StreamingMediaIMA" />
