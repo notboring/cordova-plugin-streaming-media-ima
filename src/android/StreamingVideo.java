@@ -264,7 +264,7 @@ public class StreamingVideo extends Activity implements
   @Override
   public void onBackPressed() {
     // If we're leaving, let's finish the activity
-    wrapItUp(RESULT_OK, null);
+    //wrapItUp(RESULT_OK, null);
   }
 
   @Override
