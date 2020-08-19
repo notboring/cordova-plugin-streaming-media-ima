@@ -346,6 +346,9 @@ public class StreamingVideo extends Activity implements
           mAdsManager = null;
         }
         break;
+      case COMPLETED:
+        wrapItUp(RESULT_OK, null);
+        break;
       default:
         break;
     }
