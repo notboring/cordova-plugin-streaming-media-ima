@@ -70,7 +70,7 @@ public class StreamingVideo extends Activity implements
             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     // original: not working
     //this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-    
+
     ImaSdkSettings imaSdkSettings = ImaSdkFactory.getInstance().createImaSdkSettings();
     imaSdkSettings.setLanguage("de");
     imaSdkSettings.setMaxRedirects(9);
