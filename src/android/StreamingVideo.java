@@ -30,13 +30,14 @@ import com.google.ads.interactivemedia.v3.api.AdsManager;
 import com.google.ads.interactivemedia.v3.api.AdsManagerLoadedEvent;
 import com.google.ads.interactivemedia.v3.api.AdsRequest;
 import com.google.ads.interactivemedia.v3.api.ImaSdkFactory;
+import com.google.ads.interactivemedia.v3.api.ImaSdkSettings;
 import com.google.ads.interactivemedia.v3.api.player.ContentProgressProvider;
 import com.google.ads.interactivemedia.v3.api.player.VideoProgressUpdate;
 
 public class StreamingVideo extends Activity implements
-  MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener,
-  MediaPlayer.OnErrorListener, MediaPlayer.OnBufferingUpdateListener, AdEventListener,
-  AdErrorListener{
+        MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener,
+        MediaPlayer.OnErrorListener, MediaPlayer.OnBufferingUpdateListener, AdEventListener,
+        AdErrorListener{
   private String TAG = getClass().getSimpleName();
   private VideoView mVideoView = null;
   private MediaPlayer mMediaPlayer = null;
@@ -58,8 +59,8 @@ public class StreamingVideo extends Activity implements
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
+    this.requestWindowFeature(Window.FEATURE_NO_TITLE);
     View decorView = getWindow().getDecorView();
     decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
             | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -67,10 +68,16 @@ public class StreamingVideo extends Activity implements
             | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
             | View.SYSTEM_UI_FLAG_FULLSCREEN
             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+    // original: not working
+    //this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    
+    ImaSdkSettings imaSdkSettings = ImaSdkFactory.getInstance().createImaSdkSettings();
+    imaSdkSettings.setLanguage("de");
+    imaSdkSettings.setMaxRedirects(9);
 
     // Create an AdsLoader.
     mSdkFactory = ImaSdkFactory.getInstance();
-    mAdsLoader = mSdkFactory.createAdsLoader(this.getApplicationContext());
+    mAdsLoader = mSdkFactory.createAdsLoader(this.getApplicationContext(),imaSdkSettings);
     // Add listeners for when ads are loaded and for errors.
     mAdsLoader.addAdErrorListener(this);
     mAdsLoader.addAdsLoadedListener(new AdsLoadedListener() {
@@ -139,7 +146,7 @@ public class StreamingVideo extends Activity implements
           return VideoProgressUpdate.VIDEO_TIME_NOT_READY;
         }
         return new VideoProgressUpdate(mVideoView.getCurrentPosition(),
-          mVideoView.getDuration());
+                mVideoView.getDuration());
       }
     });
 
@@ -197,8 +204,8 @@ public class StreamingVideo extends Activity implements
     mMediaPlayer = mp;
     mMediaPlayer.setOnBufferingUpdateListener(this);
     mVideoView.requestFocus();
-    mVideoView.start();
-    mVideoView.postDelayed(checkIfPlaying, 0);
+    //mVideoView.start();
+    //mVideoView.postDelayed(checkIfPlaying, 0);
   }
 
   private void pause() {
@@ -230,6 +237,7 @@ public class StreamingVideo extends Activity implements
     Log.d(TAG, "onCompletion triggered.");
     // Handle completed event for playing post-rolls.
     if (mAdsLoader != null) {
+      Log.d(TAG, "mAdsLoader.contentComplete");
       mAdsLoader.contentComplete();
     }
     stop();
